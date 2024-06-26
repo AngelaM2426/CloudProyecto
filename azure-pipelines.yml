@@ -1,0 +1,23 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  vmName: 'AngelaMariaGarciaBermudez'
+  vmUser: 'angela'
+  vmHost: '20.55.248.70'
+  vmPort: '22'
+  destinationPath: '/var/www/html'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
+- script: |
+    echo "Starting deployment..."
+    scp -P $(vmPort) -o StrictHostKeyChecking=no -r * $(vmUser)@$(vmHost):$(destinationPath)
+  displayName: 'Copy files to Azure VM'
